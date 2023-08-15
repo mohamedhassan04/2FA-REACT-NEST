@@ -48,9 +48,28 @@ export class AuthService {
     });
 
     // Error handling if the user exist
-    if (existUser) {
-      throw new HttpException('User exist', HttpStatus.CONFLICT);
+    if (!existUser) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
+
+    // Compare password is match or no
+    const isMatch = await bcrypt.compare(loginDto.password, existUser.password);
+
+    // Error handling if the password is invalid
+    if (!isMatch) {
+      throw new HttpException('Invalid password', HttpStatus.BAD_REQUEST);
+    }
+
+    // The return payload when i logged in
+    const payload = {
+      id: existUser.id,
+      fullname: existUser.fullname,
+      email: existUser.email,
+      otp_enabled: existUser.otp_enabled,
+      otp_validated: existUser.otp_validated,
+    };
+
+    return payload;
   }
 
   async genOTP() {
