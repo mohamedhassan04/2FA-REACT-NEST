@@ -20,3 +20,18 @@ export class LoginDto {
   @IsNotEmpty()
   password: string;
 }
+
+/* GenOTP DTO */
+export class GenOTPDto {
+  @IsNotEmpty()
+  id: string;
+}
+
+/* VerifyOTP DTO */
+export class VerifyOTPDto {
+  @IsNotEmpty()
+  id: string;
+
+  @IsNotEmpty()
+  token: string;
+}
